@@ -1,0 +1,22 @@
+# Node.js dependencies
+node_modules/
+
+# Log files
+*.log
+
+# Environment files
+.env
+
+# Build output
+dist/
+build/
+
+# Optional: Debugging files
+*.debug
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Optional: npm package lock
+package-lock.json
