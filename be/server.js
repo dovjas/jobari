@@ -23,7 +23,7 @@ mongoose.connect(process.env.MONGO_URI, {
 // Routes
 const applicationRoute = require('./routes/jobApplications');
 app.use('/api/applications', applicationRoute);
-app.use('/api/applications/:id', applicationRoute);
+
 
 
 // Start the server
