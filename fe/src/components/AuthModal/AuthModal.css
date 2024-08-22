@@ -1,0 +1,22 @@
+/* AuthModal.css */
+
+.modal-header {
+    background-color: #007bff;
+    color: #fff;
+    text-align: center;
+  }
+  
+  .modal-body {
+    padding: 30px;
+  }
+  
+  .modal-footer {
+    border-top: none;
+  }
+  
+  button {
+    margin-bottom: 10px;
+  }
+ .auth-button{
+    margin-top: 10px;
+ }
