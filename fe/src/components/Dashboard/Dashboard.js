@@ -5,7 +5,7 @@ import JobsList from "./JobList";
 const Dashboard = () => {
     return(
         <div className="dashboard-container">
-            <h2>Your Job Applications</h2>
+            {/* <h2>Your Job Applications</h2> */}
             <JobsList />
         </div>
     );
