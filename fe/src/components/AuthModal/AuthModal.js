@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { Modal, Button, Form, Nav } from 'react-bootstrap';
 import { auth } from '../../configs/firebaseConfig';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
 import './AuthModal.css';
+import { setUserId } from "firebase/analytics";
 
 const AuthModal = () => {
   const [show, setShow] = useState(false);
@@ -11,6 +13,22 @@ const AuthModal = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const [user, setUser] = useState(null);
+
+  const navigate = useNavigate();
+  
+  //Track authentication state
+  useEffect(()=>{
+    const unsubscribe = auth.onAuthStateChanged((user)=>{
+      setUser(user);
+      if(user){
+          // Redirect to dashboard if user is already logged in
+          navigate('/dashboard');
+      }
+    });
+    return () => unsubscribe();
+  },[navigate]);
+
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -31,10 +49,12 @@ const AuthModal = () => {
     try {
       if (isLogin) {
         await signInWithEmailAndPassword(auth, email, password);
+        navigate('/dashboard');
         // Handle successful login (e.g., redirect, show message)
         handleClose();
       } else {
         await createUserWithEmailAndPassword(auth, email, password);
+        navigate('/dashboard');
         // Handle successful registration (e.g., redirect, show message)
         handleClose();
       }
@@ -43,14 +63,29 @@ const AuthModal = () => {
     }
   };
 
+  const handleLogout = async() =>{
+    try{
+      await signOut(auth);
+      setUser(null) // Reset user state
+      navigate('/');
+    }catch(err){
+      setError(err.message);
+    };
+  };
+
   return (
     <>
       <Nav className="ml-auto">
+      { user ? (
+        <Button variant="danger" onClick={handleLogout}>
+          Logout
+        </Button>
+        ) : (
         <Button variant="primary" onClick={handleShow}>
           Login / Register
         </Button>
-      </Nav>
-
+        )}
+      </Nav> 
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
           <Modal.Title>{isLogin ? 'Login' : 'Register'}</Modal.Title>
