@@ -1,9 +1,9 @@
-import './JobList.css';
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { Table, Button, Modal, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import './JobList.css';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -22,12 +22,10 @@ const JobsList = () => {
   const [statusOptions, setStatusOptions] = useState([]);
 
   useEffect(() => {
-    // Fetch jobs
     axios.get(`${API_BASE_URL}/api/applications`)
       .then(response => setJobs(response.data))
       .catch(error => console.log('Error fetching jobs: ', error));
 
-    // Fetch status options
     axios.get(`${API_BASE_URL}/api/applications/status`)
       .then(response => setStatusOptions(response.data))
       .catch(error => console.log('Error fetching statuses: ', error));
@@ -89,37 +87,40 @@ const JobsList = () => {
   };
 
   return (
-
     <div className="container mt-5">
       <h3>Job Applications</h3>
       <Button variant="primary" onClick={handleAdd} className="mb-3">Add New Application</Button>
+
       {jobs.length === 0 ? (
         <div className="text-center">
           <p>No job applications found. Please add a new application.</p>
         </div>
       ) : (
-      <Table striped bordered hover responsive>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Job Title</th>
-            <th>Company Name</th>
-            <th>Link</th>
-            <th>Status</th>
-            <th>Notes</th>
-            <th>Actiond</th>
-          </tr>
-        </thead>
-        <tbody>
-          {jobs.map((job, index) => (
-            <tr key={job._id}>
-              <td>{index + 1}</td>
-              <td>{job.jobTitle}</td>
-              <td>{job.companyName}</td>
-              <td><a href={job.link} target="_blank" rel="noopener noreferrer">{job.link}</a></td>
-              <td>{job.status}</td>
-              <td>{job.notes}</td>
-              <td>
+        <div className="table-responsive">
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Job Title</th>
+                <th>Company Name</th>
+                <th>Link</th>
+                <th>Status</th>
+                <th>Notes</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+            {jobs.map((job, index) => (
+              <tr key={job._id}>
+                <td data-label="#"> {index + 1} </td>
+                <td data-label="Job Title"> {job.jobTitle} </td>
+                <td data-label="Company Name"> {job.companyName} </td>
+                <td data-label="Link">
+                  <a href={job.link} target="_blank" rel="noopener noreferrer">{job.link}</a>
+                </td>
+                <td data-label="Status"> {job.status} </td>
+                <td data-label="Notes"> {job.notes} </td>
+                <td data-label="Actions">
                   <FontAwesomeIcon
                     icon={faEdit}
                     onClick={() => handleEdit(job)}
@@ -131,11 +132,13 @@ const JobsList = () => {
                     style={{ cursor: 'pointer', color: '#dc3545' }}
                   />
                 </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+              </tr>
+            ))}
+            </tbody>
+          </Table>
+        </div>
       )}
+
       {/* Edit Modal */}
       <Modal show={showEdit} onHide={handleCloseEdit}>
         <Modal.Header closeButton>
@@ -269,15 +272,13 @@ const JobsList = () => {
             Close
           </Button>
           <Button variant="primary" onClick={handleSaveNew}>
-            Save New Application
+            Save Application
           </Button>
         </Modal.Footer>
       </Modal>
     </div>
   );
 };
-
-
 
 export default JobsList;
 

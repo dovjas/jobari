@@ -1,45 +1,140 @@
-/* src/components/JobsList/JobsList.css */
-
-.job-list {
-    margin: 20px;
-    padding: 10px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-}
-
-.job-list h3 {
-    margin-bottom: 15px;
-    color: #333;
-}
-
-.job-list ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.job-list li {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-}
-
-.job-list li:last-child {
-    border-bottom: none;
-}
-
-.job-list h4 {
-    margin: 0;
-    font-size: 18px;
-    color: #007bff;
-}
-
-.job-list p {
-    margin: 5px 0;
-    color: #666;
-}
-.table thead th {
+/* General container styles */
+.container {
+    max-width: 100%;
+    padding: 15px;
+  }
+  
+  /* Header styling */
+  h3 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Table Styles */
+  .table-responsive {
+    overflow-x: auto;
+  }
+  
+  .table {
+    width: 100%;
+    margin-bottom: 20px;
+    table-layout: auto;
+  }
+  
+  .table th, .table td {
+    vertical-align: middle;
+    text-align: center;
+    padding: 12px 10px;
+  }
+  
+  .table th {
+    white-space: nowrap;
+  }
+  
+  /* Icon Styles */
+  .table td .fa-edit,
+  .table td .fa-trash {
+    font-size: 1.2em;
+    margin: 0 5px;
     cursor: pointer;
-}
-
-.table thead th:hover {
-    background-color: #f8f9fa;
-}
+  }
+  
+  /* Button Styles */
+  button {
+    margin-bottom: 20px;
+  }
+  
+  /* Mobile Styles */
+  @media (max-width: 767px) {
+    /* Ensure table is displayed block and takes full width */
+    .table-responsive {
+      overflow-x: hidden; /* Hide horizontal scroll */
+    }
+  
+    .table {
+      display: block;
+      width: 100%;
+      overflow-x: auto;
+    }
+  
+    .table thead {
+      display: none;
+    }
+  
+    .table tr {
+      display: block;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      background-color: #f9f9f9;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      width: 100%;
+    }
+  
+    .table td {
+      display: block;
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      font-size: 0.9em;
+      width: 100%;
+      position: relative;
+    }
+  
+    .table td:last-child {
+      border-bottom: 0;
+    }
+  
+    .table td:before {
+      content: attr(data-label);
+      font-weight: bold;
+      text-transform: capitalize;
+      display: block;
+      margin-bottom: 5px;
+    }
+  
+    .table td .fa-edit,
+    .table td .fa-trash {
+      font-size: 1.2em;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+  
+    button {
+      width: 100%;
+    }
+  }
+  
+  /* Modal Styles */
+  .modal-dialog {
+    max-width: 100%;
+    margin: 0;
+  }
+  
+  .modal-content {
+    border-radius: 0;
+  }
+  
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding: 15px;
+  }
+  
+  .modal-title {
+    font-size: 1.25rem;
+  }
+  
+  /* Ensure modal takes full width on small screens */
+  @media (max-width: 767px) {
+    .modal-dialog {
+      width: 100%;
+      margin: 0;
+    }
+  
+    .modal-content {
+      border-radius: 0;
+      width: 100%;
+    }
+  }
+  
