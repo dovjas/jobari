@@ -1,14 +1,47 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form, Nav } from 'react-bootstrap';
+import { auth } from '../../configs/firebaseConfig';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import './AuthModal.css';
 
 const AuthModal = () => {
   const [show, setShow] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const toggleForm = () => setIsLogin(!isLogin);
+  const toggleForm = () => {
+    setIsLogin(!isLogin);
+    setError('');
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    if (!email || !password || (!isLogin && password !== confirmPassword)) {
+      setError('Please fill in all fields and ensure passwords match.');
+      return;
+    }
+
+    try {
+      if (isLogin) {
+        await signInWithEmailAndPassword(auth, email, password);
+        // Handle successful login (e.g., redirect, show message)
+        handleClose();
+      } else {
+        await createUserWithEmailAndPassword(auth, email, password);
+        // Handle successful registration (e.g., redirect, show message)
+        handleClose();
+      }
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
   return (
     <>
@@ -23,44 +56,48 @@ const AuthModal = () => {
           <Modal.Title>{isLogin ? 'Login' : 'Register'}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {isLogin ? (
-            <Form>
-              <Form.Group controlId="loginEmail">
-                <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" placeholder="Enter email" />
-              </Form.Group>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="authEmail">
+              <Form.Label>Email address</Form.Label>
+              <Form.Control 
+                type="email" 
+                placeholder="Enter email" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </Form.Group>
 
-              <Form.Group controlId="loginPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" />
-              </Form.Group>
+            <Form.Group controlId="authPassword">
+              <Form.Label>Password</Form.Label>
+              <Form.Control 
+                type="password" 
+                placeholder="Password" 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </Form.Group>
 
-              <Button className="auth-button" variant="primary" type="submit" block>
-                Login
-              </Button>
-            </Form>
-          ) : (
-            <Form>
-              <Form.Group controlId="registerEmail">
-                <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" placeholder="Enter email" />
-              </Form.Group>
-
-              <Form.Group controlId="registerPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" />
-              </Form.Group>
-
-              <Form.Group controlId="registerConfirmPassword">
+            {!isLogin && (
+              <Form.Group controlId="authConfirmPassword">
                 <Form.Label>Confirm Password</Form.Label>
-                <Form.Control type="password" placeholder="Confirm Password" />
+                <Form.Control 
+                  type="password" 
+                  placeholder="Confirm Password" 
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                />
               </Form.Group>
+            )}
 
-              <Button className="auth-button" variant="primary" type="submit" block>
-                Register
-              </Button>
-            </Form>
-          )}
+            {error && <p className="text-danger">{error}</p>}
+
+            <Button className="auth-button" variant="primary" type="submit" block>
+              {isLogin ? 'Login' : 'Register'}
+            </Button>
+          </Form>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={toggleForm} block>

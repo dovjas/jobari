@@ -20,6 +20,8 @@ connectDb();
 const applicationRoute = require('./routes/jobApplications');
 app.use('/api/applications', applicationRoute);
 
+const userAuthRoute = require('./routes/userAuth');
+app.use('/api/users', userAuthRoute);
 
 // Start the server
 app.listen(PORT,()=>{
