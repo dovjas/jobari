@@ -16,10 +16,21 @@ exports.getApplications = async(req,res)=>{
         const jobApplications = await JobApplication.find();
         res.json(jobApplications);
     }catch(error){
-        res.status(500).json({messsage: message.error});
+        res.status(500).json({messsage: error.message});
     };
-};
-
+}; 
+// Get application by ID
+exports.getApplicationById = async(req,res)=>{
+    try{
+        const jobApplication = await JobApplication.findById(req.params.id);
+        if(!jobApplication){
+            return res.status(404).json({ message: 'Application not found' });
+        }
+        res.json(jobApplication);
+    }catch(error){
+        return res.status(500).json({message:error.message});
+    }
+}
 // Update a job application
 exports.updateApplication = async(req,res)=>{
     try{
@@ -36,7 +47,6 @@ exports.updateApplication = async(req,res)=>{
         res.status(500).json({ message: error.message });
     };
 };
-
 // Delete application
 exports.deleteApplication = async(req,res)=>{
     try{
@@ -51,3 +61,8 @@ exports.deleteApplication = async(req,res)=>{
         res.status(500).json({ message: error.message });
     };
 };
+//Get application status
+exports.applicationsStatus = async(req,res)=>{
+        const status = await JobApplication.schema.path('status').enumValues;
+        res.json(status);
+}

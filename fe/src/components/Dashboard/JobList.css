@@ -1,0 +1,45 @@
+/* src/components/JobsList/JobsList.css */
+
+.job-list {
+    margin: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.job-list h3 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.job-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.job-list li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.job-list li:last-child {
+    border-bottom: none;
+}
+
+.job-list h4 {
+    margin: 0;
+    font-size: 18px;
+    color: #007bff;
+}
+
+.job-list p {
+    margin: 5px 0;
+    color: #666;
+}
+.table thead th {
+    cursor: pointer;
+}
+
+.table thead th:hover {
+    background-color: #f8f9fa;
+}
